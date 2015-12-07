@@ -1,0 +1,15 @@
+Flask==0.10.1
+Flask-API==0.6.4
+Jinja2==2.8
+MarkupSafe==0.23
+Unidecode==0.04.18
+Werkzeug==0.11.2
+decorator==4.0.4
+gunicorn==19.4.1
+imageio==1.4
+itsdangerous==0.24
+moviepy==0.2.2.11
+numpy==1.10.1
+requests==2.8.1
+tqdm==3.1.4
+wsgiref==0.1.2
