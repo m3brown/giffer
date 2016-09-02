@@ -35,5 +35,4 @@ For example:
 ```
 ```json
 {"text": "hey guys", "search": "elf wave"}
-
 ```
