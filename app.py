@@ -25,6 +25,12 @@ def giffer():
             data.pop('search')
             data.pop('search_type', None)
 
+        # A bug in moviepy requires ver_align and hor_align to be string, not unicode
+        # https://github.com/Zulko/moviepy/issues/293
+        for key in ['hor_align', 'ver_align']:
+            if key in data and type(data[key]) == unicode:
+                data[key] = str(data[key])
+
         gif_file = factory.create(**data)
         resp = send_file(gif_file)
         # delete the file after it's sent
