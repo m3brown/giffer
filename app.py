@@ -1,4 +1,4 @@
-from flask.ext.api import FlaskAPI, exceptions
+from flask_api import FlaskAPI, exceptions
 from flask import request, send_file
 from gif_factory import GifFactory
 from fileremover import FileRemover

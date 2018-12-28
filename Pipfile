@@ -1,0 +1,14 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+gunicorn = "==19.9.0"
+imageio = "==2.4.1"
+moviepy = "==0.2.3.5"
+requests = "==2.21.0"
+Flask = "==1.0.2"
+Flask-API = "==1.1"
