@@ -15,14 +15,14 @@ COPY .magick/policy.xml /etc/ImageMagick-6/policy.xml
 
 RUN pip install -r requirements.txt
 
-# install ffmpeg from imageio.
-RUN python -c "import imageio; imageio.plugins.ffmpeg.download()"
-
 #add soft link so that ffmpeg can executed (like usual) from command line
-RUN ln -s /root/.imageio/ffmpeg/ffmpeg.linux64 /usr/bin/ffmpeg
+RUN ln -s /home/myuser/.imageio/ffmpeg/ffmpeg.linux64 /usr/bin/ffmpeg
 
 # Run the image as a non-root user
 RUN adduser -system myuser
 USER myuser
+
+# install ffmpeg from imageio.
+RUN python -c "import imageio; imageio.plugins.ffmpeg.download()"
 
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "app:app"]
