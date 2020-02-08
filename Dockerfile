@@ -11,7 +11,6 @@ WORKDIR $PROJECT_HOME
 COPY requirements.txt $PROJECT_HOME
 COPY src/ $PROJECT_HOME
 COPY .fonts $PROJECT_HOME/.fonts
-#COPY .magick $PROJECT_HOME/.magick
 COPY .magick/policy.xml /etc/ImageMagick-6/policy.xml
 
 RUN pip install -r requirements.txt
@@ -22,9 +21,8 @@ RUN python -c "import imageio; imageio.plugins.ffmpeg.download()"
 #add soft link so that ffmpeg can executed (like usual) from command line
 RUN ln -s /root/.imageio/ffmpeg/ffmpeg.linux64 /usr/bin/ffmpeg
 
-# modify ImageMagick policy file so that Textclips work correctly.
-#RUN cat /etc/ImageMagick-6/policy.xml | sed 's/none/read,write/g'> /etc/ImageMagick-6/policy.xml 
-
-EXPOSE 8000
+# Run the image as a non-root user
+RUN adduser -system myuser
+USER myuser
 
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "app:app"]
