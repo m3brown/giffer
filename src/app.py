@@ -1,4 +1,4 @@
-from flask.ext.api import FlaskAPI, exceptions
+from flask_api import FlaskAPI, exceptions
 from flask import request, send_file
 from gif_factory import GifFactory
 from fileremover import FileRemover
@@ -27,12 +27,15 @@ def giffer():
 
         # A bug in moviepy requires ver_align and hor_align to be string, not unicode
         # https://github.com/Zulko/moviepy/issues/293
-        for key in ['hor_align', 'ver_align']:
-            if key in data and type(data[key]) == unicode:
-                data[key] = str(data[key])
+        #for key in ['hor_align', 'ver_align']:
+        #    if key in data and type(data[key]) == unicode:
+        #        data[key] = str(data[key])
 
         gif_file = factory.create(**data)
         resp = send_file(gif_file)
+        resp.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        resp.headers['Pragma'] = 'no-cache'
+
         # delete the file after it's sent
         # http://stackoverflow.com/questions/13344538/how-to-clean-up-temporary-file-used-with-send-file
         file_remover.cleanup_once_done(resp, gif_file)

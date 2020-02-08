@@ -1,7 +1,7 @@
 # Import everything needed to edit video clips
 from moviepy.editor import *
 from tempfile import gettempdir
-from urllib import urlretrieve
+from urllib.request import urlretrieve
 import os
 import uuid
 
