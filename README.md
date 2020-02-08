@@ -25,7 +25,7 @@ docker run -e GIPHY_API_KEY=your-key-here giffer
   - text: the text to put on the gif
   - gif: URL of the gif image to use
   - search: the search phrase to query from giphy
-  
+
 For example:
 ```json
 {"text": "time for work", "gif": "http://25.media.tumblr.com/tumblr_m810e8Cbd41ql4mgjo1_500.gif"}
