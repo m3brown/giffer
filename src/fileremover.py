@@ -1,6 +1,6 @@
 from os import remove
-import tempfile
 import weakref
+
 
 class FileRemover(object):
     def __init__(self):
@@ -12,5 +12,5 @@ class FileRemover(object):
 
     def _do_cleanup(self, wr):
         filepath = self.weak_references[wr]
-        print('Deleting %s' % filepath)
+        print("Deleting %s" % filepath)
         remove(filepath)
