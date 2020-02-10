@@ -10,7 +10,6 @@ RUN mkdir $PROJECT_HOME
 WORKDIR $PROJECT_HOME
 COPY requirements.txt $PROJECT_HOME
 COPY src/ $PROJECT_HOME
-COPY .fonts $PROJECT_HOME/.fonts
 COPY .magick/policy.xml /etc/ImageMagick-6/policy.xml
 
 RUN pip install -r requirements.txt
@@ -25,4 +24,4 @@ USER myuser
 # install ffmpeg from imageio.
 RUN python -c "import imageio; imageio.plugins.ffmpeg.download()"
 
-CMD ["gunicorn", "-b", "0.0.0.0:8000", "app:app"]
+CMD ["uvicorn", "--host", "0.0.0.0", "--reload", "app:app"]

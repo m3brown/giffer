@@ -1,9 +1,9 @@
-# Import everything needed to edit video clips
 import os
 from tempfile import gettempdir
 from urllib.request import urlretrieve
 import uuid
 
+from models import GifRequest
 from moviepy.editor import *
 
 
@@ -17,22 +17,17 @@ class GifFactory(object):
         # TODO should confirm this is a gif image...
         return filename
 
-    def create(
-        self,
-        text,
-        gif,
-        hor_align="center",
-        ver_align="top",
-        text_height=20,
-        text_width=60,
-    ):
+    def create(self, data: GifRequest):
 
-        original_gif_file = self._download_gif(gif)
+        original_gif_file = self._download_gif(data.gif)
         clip = VideoFileClip(original_gif_file)
         # Generate a text clip. You can customize the font, color, etc.
-        txt_size = [clip.size[0] * text_width / 100, clip.size[1] * text_height / 100]
+        txt_size = [
+            clip.size[0] * data.text_width / 100,
+            clip.size[1] * data.text_height / 100,
+        ]
         txt_clip = TextClip(
-            text,
+            data.text,
             color="white",
             size=txt_size,
             method="caption",
@@ -41,7 +36,7 @@ class GifFactory(object):
             stroke_width=1,
         )
 
-        txt_clip = txt_clip.set_position((hor_align, ver_align)).set_duration(
+        txt_clip = txt_clip.set_position((data.hor_align, data.ver_align)).set_duration(
             clip.duration
         )
 
