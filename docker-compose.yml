@@ -1,0 +1,21 @@
+version: '3'
+services:
+
+  redis:
+    image: 'redis'
+    container_name: cache
+    expose:
+      - 6379
+
+  app:
+    build: .
+    volumes:
+      - ./src:/app
+    ports:
+      - 8000:8000
+    links:
+      - redis
+    environment:
+      - REDIS_URL=redis://cache
+      # set in the .env file
+      - GIPHY_API_KEY=${GIPHY_API_KEY}
