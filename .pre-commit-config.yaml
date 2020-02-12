@@ -31,3 +31,16 @@ repos:
     rev: 0.2.0
     hooks:
     -   id: zimports
+
+# vulnerability checking
+-   repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+    sha: v1.1.0
+    hooks:
+    -   id: python-safety-dependencies-check
+
+# Dockerfile linting
+- repo: https://github.com/pryorda/dockerfilelint-precommit-hooks
+  rev: v0.1.0
+  hooks:
+  - id: dockerfilelint
+    stages: [commit]
