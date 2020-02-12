@@ -1,3 +1,4 @@
+from cache import cache
 from fastapi import BackgroundTasks
 from fastapi import FastAPI
 from fileremover import remove_file
@@ -10,6 +11,16 @@ from starlette.responses import HTMLResponse
 app = FastAPI()
 
 factory = GifFactory()
+
+
+@app.on_event("startup")
+async def startup_event():
+    await cache.startup()
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    await cache.close()
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -30,12 +41,9 @@ def home():
 @app.post("/")
 async def giffer(data: GifRequest, background_tasks: BackgroundTasks):
     if data.search:
-        # if "search_type" in data and data["search_type"] == "translate":
-        #     data.gif = giphy.translate(data["search"])
-        # else:
-        data.gif = giphy.search(data.search)
+        data.gif = await giphy.search(data.search)
 
-    gif_file_path = factory.create(data)
+    gif_file_path = await factory.create(data)
     headers = {
         "Cache-Control": "no-cache, no-store, must-revalidate",
         "Pragma": "no-cache",

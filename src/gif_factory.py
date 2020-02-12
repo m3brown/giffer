@@ -1,8 +1,11 @@
+import asyncio
 import os
 from tempfile import gettempdir
-from urllib.request import urlretrieve
 import uuid
 
+import aiofiles
+from cache import cache
+import httpx
 from models import GifRequest
 from moviepy.editor import *
 
@@ -11,15 +14,30 @@ class GifFactory(object):
     def __init__(self):
         self.tempdir = gettempdir() + "/"
 
-    def _download_gif(self, url):
+    async def _write_bytes_to_file(self, data, filename):
+        async with aiofiles.open(filename, "wb+") as file:
+            await file.write(data)
+
+    async def _download_gif(self, url):
         filename = self.tempdir + str(uuid.uuid4()) + ".gif"
-        urlretrieve(url, filename)
+
+        contents = await cache.get(url)
+        if contents is None:
+            async with httpx.AsyncClient() as client:
+                resp = await client.get(url)
+                task1 = asyncio.create_task(cache.set(url, resp.content))
+                task2 = asyncio.create_task(
+                    self._write_bytes_to_file(resp.content, filename)
+                )
+                await task1
+                await task2
+        else:
+            await self._write_bytes_to_file(contents, filename)
         # TODO should confirm this is a gif image...
         return filename
 
-    def create(self, data: GifRequest):
-
-        original_gif_file = self._download_gif(data.gif)
+    async def create(self, data: GifRequest):
+        original_gif_file = await self._download_gif(data.gif)
         clip = VideoFileClip(original_gif_file)
         # Generate a text clip. You can customize the font, color, etc.
         txt_size = [

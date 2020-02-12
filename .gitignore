@@ -1,2 +1,2 @@
 *.pyc
-api_key
+.env

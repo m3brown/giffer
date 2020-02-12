@@ -1,8 +1,5 @@
 FROM python:3
 
-# Install numpy using system package manager
-RUN apt-get -y update && apt-get -y install imagemagick
-
 ENV PROJECT_HOME=/app
 ENV GIPHY_API_KEY=
 
