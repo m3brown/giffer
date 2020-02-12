@@ -4,7 +4,7 @@ This is a proof of concept for an API for adding text to gif images.  Think of i
 
 #### Technology stack
 - Python 3
-- Flask w/ Flask-API for a pretty front end
+- FastAPI
 - moviepy
 
 ## Dependencies
@@ -15,12 +15,13 @@ This is a proof of concept for an API for adding text to gif images.  Think of i
 ```shell
 git clone https://github.com/m3brown/giffer
 cd giffer
-docker build -t giffer
-docker run -e GIPHY_API_KEY=your-key-here giffer
+echo "GIPHY_API_KEY=$yourkey" > .env
+docker-compose build
+docker-compose up
 ```
 
 ## Using the app
-- After running `docker run` you should be able to reach the site at localhost:8000
+- After launching the app, you can visit the interactive docs at localhost:8000/docs
 - Create a gif by submitting a POST with JSON data.  At the least, you'll need `text` along with one of `gif` or `search`
   - text: the text to put on the gif
   - gif: URL of the gif image to use
