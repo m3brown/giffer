@@ -18,7 +18,4 @@ RUN ln -s /home/myuser/.imageio/ffmpeg/ffmpeg.linux64 /usr/bin/ffmpeg
 RUN adduser -system myuser
 USER myuser
 
-# install ffmpeg from imageio.
-RUN python -c "import imageio; imageio.plugins.ffmpeg.download()"
-
 CMD ["uvicorn", "--host", "0.0.0.0", "--reload", "app:app"]
