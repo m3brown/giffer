@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.9
 
 ENV PROJECT_HOME=/app
 ENV GIPHY_API_KEY=
