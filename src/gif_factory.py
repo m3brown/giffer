@@ -37,7 +37,7 @@ class GifFactory(object):
         return filename
 
     async def create(self, data: GifRequest):
-        original_gif_file = await self._download_gif(data.gif)
+        original_gif_file = await self._download_gif(data.gif.url)
         clip = VideoFileClip(original_gif_file)
         # Generate a text clip. You can customize the font, color, etc.
         txt_size = [
