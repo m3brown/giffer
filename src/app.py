@@ -35,10 +35,16 @@ def home():
             Please refer to the <a href="/docs">documentation</a> for guidance.
           </center>
           <div>
-              <form action="/form" method='POST'>
-                  <input name='search'>
-                  <input name='text'>
-                  <input value="Submit" type="submit">
+              <form action="/form" method='POST' target="_blank">
+                  <div style="margin-top:10px">
+                    <label>Search</label>
+                    <input name='search'>
+                  </div>
+                  <div style="margin-top:10px">
+                    <label>Text</label>
+                    <input name='text'>
+                  </div>
+                  <input style="margin-top:10px" value="Submit" type="submit">
               </form>
           </div>
         </body>
