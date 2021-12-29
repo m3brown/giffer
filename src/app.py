@@ -5,6 +5,8 @@ from fileremover import remove_file
 from gif_factory import GifFactory
 import giphy
 from models import GifRequest
+from pydantic import AnyHttpUrl
+from pydantic import BaseModel
 from starlette.responses import FileResponse
 from starlette.responses import HTMLResponse
 
@@ -41,7 +43,13 @@ def home():
 @app.post("/")
 async def giffer(data: GifRequest, background_tasks: BackgroundTasks):
     if data.search:
-        data.gif = await giphy.search(data.search)
+        url = await giphy.search(data.search)
+
+        # Generate a pydantic.AnyHttpUrl object for data.gif
+        class Model(BaseModel):
+            url: AnyHttpUrl
+
+        data.gif = Model(url=url).url
 
     gif_file_path = await factory.create(data)
     headers = {
