@@ -46,8 +46,7 @@ def home():
     """
 
 
-@app.post("/")
-async def giffer(data: GifRequest, background_tasks: BackgroundTasks):
+async def process_gif_request(data: GifRequest, background_tasks: BackgroundTasks):
     if data.search:
         url = await giphy.search(data.search)
         if type(url) == bytes:
@@ -63,9 +62,14 @@ async def giffer(data: GifRequest, background_tasks: BackgroundTasks):
     return FileResponse(path=gif_file_path, headers=headers, media_type="image/gif")
 
 
+@app.post("/")
+async def giffer(data: GifRequest, background_tasks: BackgroundTasks):
+    return await process_gif_request(data, background_tasks)
+
+
 @app.post("/form")
 async def giffer_form(
     background_tasks: BackgroundTasks, search: str = Form(...), text: str = Form(...)
 ):
     data = GifRequest(search=search, text=text)
-    return giffer(data, background_tasks)
+    return await process_gif_request(data, background_tasks)
