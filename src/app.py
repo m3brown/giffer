@@ -1,6 +1,7 @@
 from cache import cache
 from fastapi import BackgroundTasks
 from fastapi import FastAPI
+from fastapi import Form
 from fileremover import remove_file
 from gif_factory import GifFactory
 import giphy
@@ -33,6 +34,13 @@ def home():
           <center>
             Please refer to the <a href="/docs">documentation</a> for guidance.
           </center>
+          <div>
+              <form action="/form" method='POST'>
+                  <input name='search'>
+                  <input name='text'>
+                  <input value="Submit" type="submit">
+              </form>
+          </div>
         </body>
       </html>
     """
@@ -53,3 +61,11 @@ async def giffer(data: GifRequest, background_tasks: BackgroundTasks):
     }
     background_tasks.add_task(remove_file, gif_file_path)
     return FileResponse(path=gif_file_path, headers=headers, media_type="image/gif")
+
+
+@app.post("/form")
+async def giffer_form(
+    background_tasks: BackgroundTasks, search: str = Form(...), text: str = Form(...)
+):
+    data = GifRequest(search=search, text=text)
+    return giffer(data, background_tasks)
