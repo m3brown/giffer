@@ -42,7 +42,9 @@ def home():
 async def giffer(data: GifRequest, background_tasks: BackgroundTasks):
     if data.search:
         url = await giphy.search(data.search)
-        data = data.copy(update={"gif": url.decode("utf-8")})
+        if type(url) == bytes:
+            url = url.decode("utf-8")
+        data = data.copy(update={"gif": url})
 
     gif_file_path = await factory.create(data)
     headers = {
