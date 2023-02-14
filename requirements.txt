@@ -14,7 +14,7 @@ Pillow==9.0.1
 pydantic==1.8.2
 python-multipart==0.0.5
 requests==2.25.1
-starlette==0.14.2
+starlette==0.25.0
 tqdm==4.61.0
 uvicorn==0.14.0
 uvloop==0.15.2
